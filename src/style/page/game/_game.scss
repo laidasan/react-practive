@@ -1,0 +1,36 @@
+.game {
+  display: flex;
+
+  &-features {
+    margin-right: 1.5rem;
+  }
+
+  &__square {
+    position: relative;
+    background-color: $white;
+    box-shadow: 0 0 0 1px $black;
+    cursor: pointer;
+
+    &__content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.5rem;
+      color: $black;
+    }
+  }
+
+  &__board {
+    margin-right: auto;
+    margin-left: auto;
+    box-shadow: 0 0 0 1px $black;
+
+    &__container {
+      height: 100%;
+      display: flex;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+  }
+}
