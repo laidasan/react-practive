@@ -4,16 +4,6 @@
  * @description Stack interface
  */
 class IStack {
-  store = []
-
-  /**
-   * @constructor 
-   * @param {Array.<*>} store
-   */
-  constructor(store) {
-    this.store = store
-  }
-
   /**
    * @function pop
    * @abstract
@@ -25,6 +15,30 @@ class IStack {
    * @abstract
    */
   push() {}
+
+  /**
+   * @function peek
+   * @abstract
+   */
+  peek() {}
+
+  /**
+   * @function isEmpty
+   * @abstract
+   */
+  isEmpty() {}
+
+  /**
+   * @function size
+   * @abstract
+   */
+  size() {}
+
+  /**
+   * @function clear
+   * @abstract
+   */
+  clear() {}
 }
 
 export { IStack }

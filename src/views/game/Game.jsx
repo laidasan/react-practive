@@ -1,13 +1,11 @@
 import React from 'react';
-import { compose, isNil, complement, isEmpty, not, equals, all, map, times, last, nth } from 'ramda'
+import { compose, isNil, not, equals, all, map, times, none, propEq } from 'ramda'
 
 import { Mark } from './Mark.js'
 
 import Board, { DefaultBoardSize, DefaultSquareSize } from './components/Board.jsx'
-// import Test from './components/Test.jsx'
-// import TestChildren from './components/TestChildren.jsx';
 
-const isNotEmpty = complement(isEmpty)
+import { Stack } from '../../lib/Stack.js'
 
 function calculateWinner(squares) {
   const lines = [
@@ -39,7 +37,23 @@ class Game extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = {
+    this.history = new Stack()
+    this.oldHistory = new Stack()
+    
+
+    this.state = this.createInitialState()
+
+
+
+    this.onSquareClick = this.onSquareClick.bind(this)
+    this.prev = this.prev.bind(this)
+    this.next = this.next.bind(this)
+    this.restart = this.restart.bind(this)
+  }
+
+  createInitialState() {
+    return {
+      isGameOver: false,
       info: `Next Player: ${this.getMarkString(Mark.O)}`,
       size: DefaultBoardSize,
       squares: times((number) => ({
@@ -49,12 +63,7 @@ class Game extends React.Component {
       }) , Math.pow(DefaultBoardSize, 2)),
       squareSize: DefaultSquareSize,
       currentPlayer: Mark.X,
-      history: []
     }
-
-    this.onSquareClick = this.onSquareClick.bind(this)
-    this.backToLastStep = this.backToLastStep.bind(this)
-
   }
 
   setBoardSize(size) {
@@ -105,26 +114,53 @@ class Game extends React.Component {
       )(this.state.squares)
       const nextPlayer = this.getNextPlayer()
       const winner = calculateWinner(updatedSquares)
-      const info = isNil(winner) 
+      const info = isNil(winner)
         ? `Next Player: ${this.getMarkString(this.state.currentPlayer)}`
         : `Winner is ${this.getMarkString(winner)}`
+      const isGameOver = !isNil(winner) || none(propEq('mark')(-1))(updatedSquares)
 
+      this.history.push(this.state)
+      this.oldHistory.clear()
       this.setState({
+        ...this.state,
+        isGameOver,
         info,
         currentPlayer: nextPlayer,
-        squares: updatedSquares,
-        history: [...this.state.history, this.state],
+        squares: updatedSquares
       })
     }
   }
 
-  backToLastStep() {
-    this.setState(last(this.state.history))
+  restart() {
+    this.history.clear()
+    this.oldHistory.clear()
+    this.setState(this.createInitialState())
   }
 
-  backToStep(step) {
-    if(isNotEmpty(this.state.history)) {
-      this.setState(nth(step - 1, this.state.history))
+  prev() {
+    if (!(this.state.isGameOver || this.history.isEmpty())) {
+      const lastStepState = this.history.pop()
+
+      this.oldHistory.push(this.state)
+      this.setState(lastStepState)
+    }
+  }
+
+  next() {
+    if (!(this.state.isGameOver || this.oldHistory.isEmpty())) {
+      const stepState = this.oldHistory.pop()
+
+      this.history.push(this.state)
+      this.setState(stepState)
+    }
+  }
+
+
+  get nextButton() {
+    return {
+      style: {
+        display: this.oldHistory.isEmpty() ? 'none' : 'block'
+      }
     }
   }
   
@@ -132,8 +168,17 @@ class Game extends React.Component {
     return (
       <div className="game">
         <div className="game-features">
-          <button onClick={this.backToLastStep}>backToLastStep</button>
+          <div className="game-features__button game-features__button--restart">
+            <button onClick={this.restart}>重新開始</button>
+          </div>
+          <div className="game-features__button">
+            <button onClick={this.prev}>上一步</button>
+          </div>
+          <div className="game-features__button game-features__button--next" style={this.nextButton.style}>
+            <button onClick={this.next}>下一步</button>
+          </div>
         </div>
+
         <Board 
           info={this.state.info} 
           size={this.state.size} 
@@ -141,14 +186,6 @@ class Game extends React.Component {
           squareSize={this.state.squareSize}
           onSquareClick={this.onSquareClick}
         />
-        {/* <Test>
-          <TestChildren />
-        </Test> */}
-        {/* <Test>  
-          {({ str }) => (
-            <TestChildren str={str} />
-          )}
-        </Test> */}
       </div>
     )
   }

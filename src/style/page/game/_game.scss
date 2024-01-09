@@ -3,6 +3,15 @@
 
   &-features {
     margin-right: 1.5rem;
+    padding-top: 1.5rem;
+
+    &__button {
+      margin-bottom: 0.75rem;
+    }
+  }
+
+  &__info {
+    margin-bottom: 8px;
   }
 
   &__square {
