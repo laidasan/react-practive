@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "https://laidasan.github.io/react-practive/static/css/main.10e1be29.css",
-    "main.js": "https://laidasan.github.io/react-practive/static/js/main.1f15f126.js",
+    "main.css": "https://laidasan.github.io/react-practive/static/css/main.7799675e.css",
+    "main.js": "https://laidasan.github.io/react-practive/static/js/main.38bd2022.js",
     "static/js/787.28cb0dcd.chunk.js": "https://laidasan.github.io/react-practive/static/js/787.28cb0dcd.chunk.js",
     "index.html": "https://laidasan.github.io/react-practive/index.html",
-    "main.10e1be29.css.map": "https://laidasan.github.io/react-practive/static/css/main.10e1be29.css.map",
-    "main.1f15f126.js.map": "https://laidasan.github.io/react-practive/static/js/main.1f15f126.js.map",
+    "main.7799675e.css.map": "https://laidasan.github.io/react-practive/static/css/main.7799675e.css.map",
+    "main.38bd2022.js.map": "https://laidasan.github.io/react-practive/static/js/main.38bd2022.js.map",
     "787.28cb0dcd.chunk.js.map": "https://laidasan.github.io/react-practive/static/js/787.28cb0dcd.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.10e1be29.css",
-    "static/js/main.1f15f126.js"
+    "static/css/main.7799675e.css",
+    "static/js/main.38bd2022.js"
   ]
 }
